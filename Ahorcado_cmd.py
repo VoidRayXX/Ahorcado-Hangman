@@ -171,6 +171,12 @@ def continuar(opcion):
 	else:
 		return False
 
+def letrasUsadas(lista):
+	msj = ''
+	for letra in lista:
+		msj += letra + ', '
+	print("\n\nLetras ya usadas:",msj)
+
 juego = Juego()
 nuevo_juego = True
 jugando = True
@@ -181,6 +187,7 @@ juego.inicio(start,victorias,derrotas)
 start = False
 while nuevo_juego:
 	estado = 0
+	letras_usadas = []
 	lista,word = juego.getPalabra(juego)
 	if len(lista) == 0:
 		print("\n\n")
@@ -194,7 +201,8 @@ while nuevo_juego:
 		juego.limpiarPantalla()
 		juego.displayAhorcado(estado,start,victorias,derrotas)
 		juego.trabajarPalabra(lista)
-		eleccion = input("\n\n Ingrese una letra, o bien, la palabra entera: ").upper()
+		letrasUsadas(letras_usadas)
+		eleccion = input("\n Ingrese una letra, o bien, la palabra entera: ").upper()
 		evaluacion,lista = juego.evaluar(eleccion,word,lista,juego)
 		if evaluacion == 'victoria':
 			victorias += 1
@@ -206,6 +214,7 @@ while nuevo_juego:
 			nuevo_juego = continuar(decision)
 			break
 		elif evaluacion == 'incorrecto':
+			letras_usadas.append(eleccion)
 			estado += 1
 		elif evaluacion == 'derrota':
 			estado = 7
